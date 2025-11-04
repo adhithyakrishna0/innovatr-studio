@@ -7,8 +7,20 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedText from "@/components/AnimatedText";
 import { ArrowRight } from "lucide-react";
+import { useEffect } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import type { Engine } from "@tsparticles/engine";
 
 const Home = () => {
+  const particlesInit = async (engine: Engine) => {
+    await loadSlim(engine);
+  };
+  
+  useEffect(() => {
+    initParticlesEngine(particlesInit);
+  }, []);
+  
   const { data: profile } = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
@@ -35,10 +47,96 @@ const Home = () => {
     },
   });
   
+  const { data: resume } = useQuery({
+    queryKey: ["resume"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("resume")
+        .select("*")
+        .order("updated_at", { ascending: false })
+        .limit(1)
+        .single();
+      
+      if (error && error.code !== 'PGRST116') throw error;
+      return data;
+    },
+  });
+  
   const titles = profile?.title ? profile.title.split("|").map(t => t.trim()) : ["Innovator", "Cybersecurity Engineer"];
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
+      <Particles
+        id="tsparticles-home"
+        options={{
+          background: {
+            color: {
+              value: "transparent",
+            },
+          },
+          fpsLimit: 120,
+          particles: {
+            color: {
+              value: "hsl(var(--primary))",
+            },
+            links: {
+              color: "hsl(var(--primary))",
+              distance: 150,
+              enable: true,
+              opacity: 0.15,
+              width: 1,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: {
+                default: "bounce",
+              },
+              random: true,
+              speed: 0.5,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+              },
+              value: 50,
+            },
+            opacity: {
+              value: 0.2,
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 1, max: 2 },
+            },
+          },
+          detectRetina: true,
+          interactivity: {
+            events: {
+              onHover: {
+                enable: true,
+                mode: "repulse",
+              },
+              onClick: {
+                enable: true,
+                mode: "push",
+              },
+            },
+            modes: {
+              repulse: {
+                distance: 100,
+                duration: 0.4,
+              },
+              push: {
+                quantity: 4,
+              },
+            },
+          },
+        }}
+        className="absolute inset-0 -z-10"
+      />
       <Navigation />
       
       <main className="flex-1 pt-20">
@@ -62,7 +160,7 @@ const Home = () => {
                   <img
                     src={profile.profile_image_url}
                     alt={profile.full_name || "Profile"}
-                    className="w-32 h-32 rounded-full border-4 border-primary glow-border object-cover"
+                    className="w-48 h-48 rounded-full border-4 border-primary glow-border object-cover shadow-2xl"
                   />
                 </motion.div>
               )}
@@ -87,11 +185,32 @@ const Home = () => {
                     <motion.div
                       key={stat.id}
                       initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      animate={{ 
+                        opacity: 1, 
+                        y: 0,
+                      }}
+                      whileHover={{ 
+                        y: -10,
+                        scale: 1.05,
+                        transition: { duration: 0.2 }
+                      }}
                       transition={{ delay: 0.5 + index * 0.1 }}
-                      className="bg-card rounded-lg p-6 border border-border hover:border-primary transition-all hover:shadow-glow"
+                      className="bg-card rounded-lg p-6 border border-border hover:border-primary transition-all hover:shadow-glow cursor-pointer"
                     >
-                      <div className="text-3xl font-bold text-primary mb-2">{stat.value}</div>
+                      <motion.div 
+                        className="text-3xl font-bold text-primary mb-2"
+                        animate={{ 
+                          scale: [1, 1.1, 1],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          repeatDelay: 1,
+                          delay: index * 0.3,
+                        }}
+                      >
+                        {stat.value}
+                      </motion.div>
                       <div className="text-sm text-muted-foreground">{stat.label}</div>
                     </motion.div>
                   ))}
@@ -115,6 +234,13 @@ const Home = () => {
                     Get In Touch
                   </Button>
                 </Link>
+                {resume && (
+                  <a href={resume.file_url} download target="_blank" rel="noopener noreferrer">
+                    <Button size="lg" variant="secondary">
+                      Download Resume
+                    </Button>
+                  </a>
+                )}
               </motion.div>
             </motion.div>
           </div>

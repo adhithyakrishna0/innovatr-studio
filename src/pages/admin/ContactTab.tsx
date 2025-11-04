@@ -15,6 +15,7 @@ interface ContactItem {
   label: string;
   url: string;
   icon: string;
+  phone?: string;
   visible: boolean;
   display_order: number;
 }
@@ -102,6 +103,7 @@ const ContactTab = () => {
               label: contact.label,
               url: contact.url,
               icon: contact.icon,
+              phone: contact.phone,
               visible: contact.visible,
               display_order: contact.display_order,
             })
@@ -114,6 +116,7 @@ const ContactTab = () => {
               label: contact.label,
               url: contact.url,
               icon: contact.icon,
+              phone: contact.phone,
               visible: contact.visible,
               display_order: contact.display_order,
             });
@@ -163,7 +166,7 @@ const ContactTab = () => {
                 <Input
                   value={contact.platform}
                   onChange={(e) => handleChange(index, "platform", e.target.value)}
-                  placeholder="email, github, etc."
+                  placeholder="email, github, whatsapp, etc."
                 />
               </div>
               
@@ -172,9 +175,21 @@ const ContactTab = () => {
                 <Input
                   value={contact.label}
                   onChange={(e) => handleChange(index, "label", e.target.value)}
-                  placeholder="Email, GitHub, etc."
+                  placeholder="Email, GitHub, WhatsApp, etc."
                 />
               </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Phone Number (for WhatsApp)</Label>
+              <Input
+                value={contact.phone || ""}
+                onChange={(e) => handleChange(index, "phone", e.target.value)}
+                placeholder="+1234567890"
+              />
+              <p className="text-xs text-muted-foreground">
+                Include country code (e.g., +1 for US). Required for WhatsApp functionality.
+              </p>
             </div>
             
             <div className="space-y-2">

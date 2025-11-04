@@ -9,6 +9,7 @@ import ProfileTab from "./ProfileTab";
 import HeroStatsTab from "./HeroStatsTab";
 import AboutTab from "./AboutTab";
 import ContactTab from "./ContactTab";
+import ResumeTab from "./ResumeTab";
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -77,12 +78,13 @@ const AdminDashboard = () => {
         </div>
         
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-6 mb-8">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="hero">Hero Stats</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="contact">Contact</TabsTrigger>
+            <TabsTrigger value="resume">Resume</TabsTrigger>
           </TabsList>
           
           <TabsContent value="profile">
@@ -103,6 +105,10 @@ const AdminDashboard = () => {
           
           <TabsContent value="contact">
             <ContactTab />
+          </TabsContent>
+          
+          <TabsContent value="resume">
+            <ResumeTab />
           </TabsContent>
         </Tabs>
       </div>
