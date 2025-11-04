@@ -41,6 +41,7 @@ export type Database = {
           icon: string
           id: string
           label: string
+          phone: string | null
           platform: string
           updated_at: string
           url: string
@@ -51,6 +52,7 @@ export type Database = {
           icon: string
           id?: string
           label: string
+          phone?: string | null
           platform: string
           updated_at?: string
           url: string
@@ -61,6 +63,7 @@ export type Database = {
           icon?: string
           id?: string
           label?: string
+          phone?: string | null
           platform?: string
           updated_at?: string
           url?: string
@@ -188,6 +191,30 @@ export type Database = {
           title?: string
           updated_at?: string
           visible?: boolean
+        }
+        Relationships: []
+      }
+      resume: {
+        Row: {
+          file_name: string
+          file_url: string
+          id: string
+          updated_at: string | null
+          uploaded_at: string | null
+        }
+        Insert: {
+          file_name: string
+          file_url: string
+          id?: string
+          updated_at?: string | null
+          uploaded_at?: string | null
+        }
+        Update: {
+          file_name?: string
+          file_url?: string
+          id?: string
+          updated_at?: string | null
+          uploaded_at?: string | null
         }
         Relationships: []
       }
