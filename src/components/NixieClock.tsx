@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import "./NixieClock.css";
 
-const NixieClock = () => {
+interface NixieClockProps {
+  isOn: boolean;
+  onToggle: () => void;
+}
+
+const NixieClock = ({ isOn, onToggle }: NixieClockProps) => {
   const [displayStr, setDisplayStr] = useState("000000AM000000");
 
   useEffect(() => {
@@ -37,7 +42,16 @@ const NixieClock = () => {
   }, []);
 
   return (
-    <div className="nixie-clock-wrapper">
+    <div className={`nixie-clock-wrapper ${isOn ? 'clock-on' : 'clock-off'}`}>
+      {/* Power Button */}
+      <button 
+        onClick={onToggle}
+        className="power-button"
+        aria-label={isOn ? "Turn off clock" : "Turn on clock"}
+      >
+        <div className={`power-indicator ${isOn ? 'active' : ''}`} />
+      </button>
+      
       <svg id="noise-svg">
         <filter id="noiseFilter">
           <feTurbulence

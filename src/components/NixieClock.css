@@ -6,6 +6,49 @@
     max-width: 600px;
     aspect-ratio: 1;
     margin: 0 auto;
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Power Button */
+.power-button {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    width: 2.5em;
+    height: 2.5em;
+    background: linear-gradient(135deg, hsl(var(--muted) / 0.4), hsl(var(--muted) / 0.2));
+    border: 2px solid hsl(var(--muted) / 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.power-button:hover {
+    background: linear-gradient(135deg, hsl(var(--muted) / 0.6), hsl(var(--muted) / 0.4));
+    border-color: hsl(var(--primary) / 0.5);
+    transform: translateX(-50%) scale(1.1);
+}
+
+.power-indicator {
+    width: 1em;
+    height: 1em;
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0);
+}
+
+.power-indicator.active {
+    background: hsl(var(--primary));
+    box-shadow: 
+        0 0 0.5em hsl(var(--primary)),
+        0 0 1em hsl(var(--primary) / 0.5),
+        0 0 1.5em hsl(var(--primary) / 0.3);
 }
 
 #noise-svg {
@@ -29,6 +72,7 @@
     justify-content: center;
     align-items: center;
     font-size: calc(var(--_size) * 0.01);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 
     --_factor: min(600px, 80vh);
     --_size: min(var(--_factor), 80vw);
@@ -44,6 +88,27 @@
     --m1: hsl(var(--primary));
     --m2: hsl(var(--primary) / 0.7);
     --m3: hsl(var(--primary) / 0.5);
+}
+
+/* Clock Off State */
+.clock-off .clock {
+    --_bloom: hsl(var(--muted-foreground) / 0.1);
+    --_y1: hsl(var(--muted-foreground) / 0.05);
+    --_y2: hsl(var(--muted-foreground) / 0.05);
+    --_o1: hsl(var(--muted) / 0.1);
+    --_o2: hsl(var(--muted) / 0.05);
+    --_o3: hsl(var(--muted) / 0.025);
+    --m1: hsl(var(--muted-foreground) / 0.15);
+    --m2: hsl(var(--muted-foreground) / 0.1);
+    --m3: hsl(var(--muted-foreground) / 0.05);
+}
+
+.clock-off .shadow {
+    opacity: 0;
+}
+
+.clock-off .display {
+    opacity: 0.1;
 }
 
 .shadow {
@@ -344,9 +409,14 @@
     justify-content: space-around;
     font-size: 1.2em;
     color: hsl(var(--muted-foreground));
-    font-family: 'LCD', monospace;
+    font-family: 'Orbitron', 'LCD', monospace;
+    font-weight: 600;
 }
 
 .labels div {
     letter-spacing: 0.1em;
+}
+
+.clock-off .labels {
+    opacity: 0.3;
 }
