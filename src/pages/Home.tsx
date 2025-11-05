@@ -8,14 +8,12 @@ import Footer from "@/components/Footer";
 import AnimatedText from "@/components/AnimatedText";
 import NixieClock from "@/components/NixieClock";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import type { Engine } from "@tsparticles/engine";
 
 const Home = () => {
-  const [isClockOn, setIsClockOn] = useState(true);
-  
   const particlesInit = async (engine: Engine) => {
     await loadSlim(engine);
   };
@@ -68,7 +66,7 @@ const Home = () => {
   const titles = profile?.title ? profile.title.split("|").map(t => t.trim()) : ["Innovator", "Cybersecurity Engineer"];
   
   return (
-    <div className={`min-h-screen flex flex-col relative transition-all duration-700 ${!isClockOn ? 'brightness-[0.3]' : ''}`}>
+    <div className="min-h-screen flex flex-col relative">
       <Particles
         id="tsparticles-home"
         options={{
@@ -147,11 +145,11 @@ const Home = () => {
           <div className="absolute inset-0 bg-gradient-dark opacity-50" />
           
           {/* Nixie Clock - Right Side */}
-          <div className="fixed right-8 top-1/2 -translate-y-1/2 z-20 hidden lg:block">
-            <NixieClock isOn={isClockOn} onToggle={() => setIsClockOn(!isClockOn)} />
+          <div className="fixed right-4 top-1/2 -translate-y-1/2 z-20 hidden xl:block w-[600px] h-[600px]">
+            <NixieClock />
           </div>
           
-          <div className="container mx-auto px-4 z-10 lg:pr-[400px]">
+          <div className="container mx-auto px-4 z-10 xl:pr-[650px]">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -187,9 +185,9 @@ const Home = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.5, duration: 0.8 }}
-                  className="flex justify-center lg:hidden"
+                  className="flex justify-center xl:hidden w-full max-w-[600px] mx-auto aspect-square"
                 >
-                  <NixieClock isOn={isClockOn} onToggle={() => setIsClockOn(!isClockOn)} />
+                  <NixieClock />
                 </motion.div>
               </div>
               

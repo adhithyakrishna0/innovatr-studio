@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import "./NixieClock.css";
 
-interface NixieClockProps {
-  isOn: boolean;
-  onToggle: () => void;
-}
-
-const NixieClock = ({ isOn, onToggle }: NixieClockProps) => {
+const NixieClock = () => {
   const [displayStr, setDisplayStr] = useState("000000AM000000");
 
   useEffect(() => {
@@ -41,155 +36,82 @@ const NixieClock = ({ isOn, onToggle }: NixieClockProps) => {
     return () => clearInterval(interval);
   }, []);
 
+  const toggleClock = (e: React.MouseEvent) => {
+    const clock = e.currentTarget.closest('.clock');
+    clock?.classList.toggle('off');
+  };
+
   return (
-    <div className={`nixie-clock-wrapper ${isOn ? 'clock-on' : 'clock-off'}`}>
-      {/* Power Button */}
-      <button 
-        onClick={onToggle}
-        className="power-button"
-        aria-label={isOn ? "Turn off clock" : "Turn on clock"}
-      >
-        <div className={`power-indicator ${isOn ? 'active' : ''}`} />
-      </button>
-      
+    <div className="nixie-wrapper">
       <svg id="noise-svg">
         <filter id="noiseFilter">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="1.5"
-            numOctaves="3"
-            stitchTiles="stitch"
-          />
+          <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="3" stitchTiles="stitch" />
         </filter>
         <rect id="noise-rect" filter="url(#noiseFilter)" />
       </svg>
 
-      <div className="clock">
+      <div className="clock off">
         <div className="shadow"></div>
-
-        <div className="base-container">
-          <div className="base">
-            <div></div>
-          </div>
-        </div>
-        <div className="small-outer-pipe">
-          <div className="small-inner-pipe"></div>
-        </div>
-        <div className="outer-pipe">
-          <div className="inner-pipe"></div>
-        </div>
+        <div className="base-container"><div className="base"><div></div></div></div>
+        <div className="small-outer-pipe"><div className="small-inner-pipe"></div></div>
+        <div className="outer-pipe"><div className="inner-pipe"></div></div>
         <div className="pipe-accents">
           <div className="top-tube"></div>
           <div className="tube-holders">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
           </div>
           <div className="top"></div>
           <div className="topinset"></div>
-          <div className="left">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-          <div className="right">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
+          <div className="left"><div></div><div></div><div></div></div>
+          <div className="right"><div></div><div></div><div></div></div>
           <div className="bottom-left"></div>
           <div className="bottom-right"></div>
         </div>
 
         <div className="display">
           <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[0]}</div>
-              <div>{displayStr[0]}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[1]}</div>
-              <div>{displayStr[1]}</div>
-            </div>
+            <div className="col"><div>8</div><div>{displayStr[0]}</div><div>{displayStr[0]}</div></div>
+            <div className="col"><div>8</div><div>{displayStr[1]}</div><div>{displayStr[1]}</div></div>
           </div>
           <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[2]}</div>
-              <div>{displayStr[2]}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[3]}</div>
-              <div>{displayStr[3]}</div>
-            </div>
+            <div className="col"><div>8</div><div>{displayStr[2]}</div><div>{displayStr[2]}</div></div>
+            <div className="col"><div>8</div><div>{displayStr[3]}</div><div>{displayStr[3]}</div></div>
           </div>
           <div style={{ height: "0.2em" }}></div>
           <div className="small-row">
             <div className="row">
-              <div className="col">
-                <div>8</div>
-                <div>{displayStr[4]}</div>
-                <div>{displayStr[4]}</div>
-              </div>
-              <div className="col">
-                <div>8</div>
-                <div>{displayStr[5]}</div>
-                <div>{displayStr[5]}</div>
-              </div>
+              <div className="col"><div>8</div><div>{displayStr[4]}</div><div>{displayStr[4]}</div></div>
+              <div className="col"><div>8</div><div>{displayStr[5]}</div><div>{displayStr[5]}</div></div>
             </div>
           </div>
           <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[6]}</div>
-              <div>{displayStr[6]}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[7]}</div>
-              <div>{displayStr[7]}</div>
-            </div>
+            <div className="col"><div>8</div><div>{displayStr[6]}</div><div>{displayStr[6]}</div></div>
+            <div className="col"><div>8</div><div>{displayStr[7]}</div><div>{displayStr[7]}</div></div>
           </div>
           <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[8]}</div>
-              <div>{displayStr[8]}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[9]}</div>
-              <div>{displayStr[9]}</div>
-            </div>
+            <div className="col"><div>8</div><div>{displayStr[8]}</div><div>{displayStr[8]}</div></div>
+            <div className="col"><div>8</div><div>{displayStr[9]}</div><div>{displayStr[9]}</div></div>
           </div>
           <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[10]}</div>
-              <div>{displayStr[10]}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[11]}</div>
-              <div>{displayStr[11]}</div>
-            </div>
+            <div className="col"><div>8</div><div>{displayStr[10]}</div><div>{displayStr[10]}</div></div>
+            <div className="col"><div>8</div><div>{displayStr[11]}</div><div>{displayStr[11]}</div></div>
           </div>
         </div>
 
-        <div className="labels">
-          <div>HR</div>
-          <div>MIN</div>
-          <div>AM/PM</div>
-          <div>MO</div>
-          <div>DAY</div>
-          <div>YR</div>
+        <div className="glass-tube"></div>
+        <div className="hex"><div className="overlay"></div></div>
+        <div className="tube-base-container">
+          <div className="wires"><div></div><div></div></div>
+          <div className="tube-base"></div>
+          <div className="rods">
+            <div className="left-rod"></div>
+            <div className="center-rod"></div>
+            <div className="right-rod"></div>
+          </div>
+          <div className="tube-btm"></div>
         </div>
+        <div className="power-cord"><div></div><div></div></div>
+        <div className="button" onClick={toggleClock}><div></div></div>
       </div>
     </div>
   );
