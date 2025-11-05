@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedText from "@/components/AnimatedText";
+import NixieClock from "@/components/NixieClock";
 import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
@@ -165,12 +166,23 @@ const Home = () => {
                 </motion.div>
               )}
               
-              <div>
-                <h1 className="text-4xl md:text-6xl font-bold mb-4">
-                  Hi, I'm <span className="text-primary glow-text">{profile?.full_name || "Developer"}</span>
-                </h1>
+              <div className="space-y-8">
+                <div>
+                  <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                    Hi, I'm <span className="text-primary glow-text">{profile?.full_name || "Developer"}</span>
+                  </h1>
+                  
+                  <AnimatedText texts={titles} />
+                </div>
                 
-                <AnimatedText texts={titles} />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5, duration: 0.8 }}
+                  className="flex justify-center"
+                >
+                  <NixieClock />
+                </motion.div>
               </div>
               
               {/* Hero Stats */}

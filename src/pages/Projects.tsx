@@ -1,4 +1,4 @@
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, useScroll, useTransform } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import { ExternalLink, Github } from "lucide-react";
 import { useEffect, useRef } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import type { Container, Engine } from "@tsparticles/engine";
+import type { Engine } from "@tsparticles/engine";
 
 const Projects = () => {
   const particlesInit = async (engine: Engine) => {
@@ -126,6 +126,14 @@ const Projects = () => {
 const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -203,9 +211,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   return (
     <motion.div
       ref={cardRef}
-      variants={cardVariants}
-      initial="hidden"
-      animate={controls}
+      style={{ y, opacity, scale }}
       className="group"
     >
       <Link to={`/project/${project.id}`}>

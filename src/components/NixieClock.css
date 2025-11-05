@@ -1,0 +1,352 @@
+@import url('https://fonts.cdnfonts.com/css/lcd');
+
+.nixie-clock-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+}
+
+#noise-svg {
+    height: 100%;
+    width: 100%;
+    opacity: 0.12;
+    position: absolute;
+    z-index: 100;
+    pointer-events: none;
+}
+#noise-rect {
+    width: 100%;
+    height: 100%;
+}
+
+.clock {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(var(--_size) * 0.01);
+
+    --_factor: min(600px, 80vh);
+    --_size: min(var(--_factor), 80vw);
+    
+    --_refl: hsl(var(--muted));
+    --_bloom: hsl(var(--primary));
+    --_y1: hsl(var(--primary) / 0.7);
+    --_y2: hsl(var(--primary));
+    --_o1: hsl(var(--primary) / 0.8);
+    --_o2: hsl(var(--primary) / 0.6);
+    --_o3: hsl(var(--primary) / 0.4);
+    --mw1: hsl(var(--muted-foreground));
+    --m1: hsl(var(--primary));
+    --m2: hsl(var(--primary) / 0.7);
+    --m3: hsl(var(--primary) / 0.5);
+}
+
+.shadow {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    width: 100%;
+    height: 0em;
+    translate: 0 45em;
+    box-shadow: 
+    0 0 3em 2em hsl(var(--background)),
+    0 0 8em 3em var(--_o3),
+    0 0 10em 4em var(--_o2),
+    0 0 10em 5em var(--_o1);
+    opacity: 0.6;
+}
+
+.shadow::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 20em;
+    width: 0;
+    box-shadow: 
+    0 0 8em 4em var(--_y1),
+    0 0 8em 6em var(--_y2),
+    0 0 8em 8em var(--_o1),
+    0 0 8em 10em var(--_o2),
+    0 0 8em 12em var(--_o3);
+}
+
+.shadow::after {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: -1;
+    opacity: 0.5;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 50%;
+    height: 10em;
+    width: 10em;
+    border: 2px solid hsl(var(--primary));
+    transform: rotateX(70deg);
+    box-shadow: 
+    0 0em 12em 40em var(--_o1),
+    0 0em 12em 60em var(--_o2),
+    0 0em 12em 80em var(--_o3);
+}
+
+.outer-pipe {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 0;
+    height: 0;
+    box-shadow: 
+        0 0 1.5em 1.5em hsl(var(--muted) / 0.1),
+        0 0 2em 2em hsl(var(--muted) / 0.05),
+        0 0 2.5em 2.5em hsl(var(--muted) / 0.025);
+}
+
+.inner-pipe {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 0;
+    height: 0;
+    box-shadow: 
+        0 0 1em 1.75em hsl(var(--background) / 0.15),
+        0 0 1em 2.5em hsl(var(--background) / 0.075),
+        0 0 1em 3.25em hsl(var(--background) / 0.0375);
+}
+
+.small-outer-pipe {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 0;
+    height: 0;
+    box-shadow: 
+        0 0 1em 1em hsl(var(--muted) / 0.1),
+        0 0 1.5em 1.5em hsl(var(--muted) / 0.05),
+        0 0 2em 2em hsl(var(--muted) / 0.025);
+}
+
+.small-inner-pipe {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 0;
+    height: 0;
+    box-shadow: 
+        0 0 0.5em 1.2em hsl(var(--background) / 0.15),
+        0 0 0.5em 1.9em hsl(var(--background) / 0.075),
+        0 0 0.5em 2.6em hsl(var(--background) / 0.0375);
+}
+
+.base-container {
+    position: absolute;
+    bottom: 38em;
+    width: 100%;
+    height: 10em;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.base {
+    position: relative;
+    height: 6em;
+    width: 52em;
+    background: linear-gradient(hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1));
+    border-radius: 3em 3em 0 0;
+    box-shadow: 0 0 1em rgba(0,0,0,0.5);
+}
+
+.base div {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 40%, hsl(var(--muted) / 0.1) 50%, transparent 60%);
+}
+
+.pipe-accents .top-tube {
+    position: absolute;
+    bottom: 44em;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 0.75em;
+    height: 3em;
+    background: linear-gradient(90deg, hsl(var(--muted) / 0.2), hsl(var(--muted) / 0.4), hsl(var(--muted) / 0.2));
+    border-radius: 0.4em;
+}
+
+.tube-holders {
+    position: absolute;
+    bottom: 43.5em;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 50em;
+    height: 1.5em;
+    display: flex;
+    justify-content: space-around;
+}
+
+.tube-holders div {
+    width: 3em;
+    height: 100%;
+    background: linear-gradient(hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1));
+    border-radius: 0.5em;
+}
+
+.pipe-accents .top {
+    position: absolute;
+    top: -14em;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 50em;
+    height: 2em;
+    background: linear-gradient(hsl(var(--muted) / 0.4), hsl(var(--muted) / 0.2));
+    border-radius: 1em;
+}
+
+.pipe-accents .topinset {
+    position: absolute;
+    top: -13.5em;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 48em;
+    height: 1em;
+    background: hsl(var(--background) / 0.5);
+    border-radius: 0.5em;
+}
+
+.pipe-accents .left,
+.pipe-accents .right {
+    position: absolute;
+    top: -12em;
+    width: 2em;
+    height: 30em;
+    background: linear-gradient(90deg, hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1));
+}
+
+.pipe-accents .left {
+    left: -1em;
+}
+
+.pipe-accents .right {
+    right: -1em;
+}
+
+.pipe-accents .left div,
+.pipe-accents .right div {
+    width: 100%;
+    height: 8em;
+    margin: 2em 0;
+    background: linear-gradient(90deg, hsl(var(--muted) / 0.2), transparent);
+}
+
+.pipe-accents .bottom-left,
+.pipe-accents .bottom-right {
+    position: absolute;
+    bottom: 38em;
+    width: 3em;
+    height: 6em;
+    background: linear-gradient(hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1));
+    border-radius: 0 0 1.5em 1.5em;
+}
+
+.pipe-accents .bottom-left {
+    left: -2em;
+}
+
+.pipe-accents .bottom-right {
+    right: -2em;
+}
+
+.display {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    font-family: 'Digitalism', 'LCD', monospace;
+    font-size: 6em;
+    color: var(--_bloom);
+    text-shadow: 
+        0 0 0.1em var(--_y1),
+        0 0 0.2em var(--_y2),
+        0 0 0.3em var(--_o1);
+    filter: brightness(1.2);
+}
+
+.display .row {
+    display: flex;
+    gap: 0.3em;
+}
+
+.display .small-row {
+    transform: scale(0.6);
+}
+
+.display .col {
+    position: relative;
+    width: 1.2em;
+    height: 1.5em;
+    overflow: hidden;
+}
+
+.display .col div {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.display .col div:nth-child(1) {
+    color: var(--mw1);
+    opacity: 0.1;
+}
+
+.display .col div:nth-child(2),
+.display .col div:nth-child(3) {
+    animation: flicker 0.1s infinite alternate;
+}
+
+@keyframes flicker {
+    0% { opacity: 1; }
+    100% { opacity: 0.95; }
+}
+
+.labels {
+    position: absolute;
+    bottom: -6em;
+    width: 50em;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.2em;
+    color: hsl(var(--muted-foreground));
+    font-family: 'LCD', monospace;
+}
+
+.labels div {
+    letter-spacing: 0.1em;
+}

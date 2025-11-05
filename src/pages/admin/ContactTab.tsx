@@ -25,7 +25,7 @@ const ContactTab = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   
-  const iconOptions = ["Mail", "Github", "Linkedin", "Twitter", "Instagram"];
+  const iconOptions = ["Mail", "Github", "Linkedin", "Twitter", "Instagram", "Phone", "MessageCircle"];
   
   useEffect(() => {
     loadContacts();
