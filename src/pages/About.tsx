@@ -22,76 +22,87 @@ const About = () => {
     },
   });
   
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-  
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navigation />
       
-      <main className="flex-1 pt-32 pb-20">
-        <div className="container mx-auto px-4 max-w-4xl">
+      <main className="flex-1 section-spacing pt-32">
+        <div className="container-luxe max-w-5xl">
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="space-y-12"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="space-y-24"
           >
-            <motion.div variants={itemVariants}>
-              <h1 className="text-5xl font-bold mb-4 glow-text">About Me</h1>
-              <div className="h-1 w-20 bg-primary rounded" />
-            </motion.div>
+            {/* Header */}
+            <div>
+              <motion.h1 
+                className="text-7xl md:text-9xl font-bold text-foreground leading-none mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+              >
+                About
+              </motion.h1>
+              <div className="luxe-divider" />
+            </div>
             
+            {/* Bio */}
             {aboutContent?.bio && (
               <motion.div
-                variants={itemVariants}
-                className="bg-card border border-border rounded-xl p-8 hover:border-primary transition-colors"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="space-y-6"
               >
-                <h2 className="text-2xl font-bold mb-4 text-primary">Biography</h2>
-                <p className="text-lg leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                <h2 className="text-sm uppercase tracking-widest text-muted-foreground">Biography</h2>
+                <p className="text-2xl md:text-3xl leading-relaxed text-foreground font-light whitespace-pre-wrap">
                   {aboutContent.bio}
                 </p>
               </motion.div>
             )}
             
+            <div className="luxe-divider" />
+            
+            {/* Education */}
             {aboutContent?.education && (
               <motion.div
-                variants={itemVariants}
-                className="bg-card border border-border rounded-xl p-8 hover:border-primary transition-colors"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="space-y-6"
               >
-                <h2 className="text-2xl font-bold mb-4 text-primary">Education</h2>
-                <p className="text-lg leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                <h2 className="text-sm uppercase tracking-widest text-muted-foreground">Education</h2>
+                <p className="text-xl leading-relaxed text-foreground/80 whitespace-pre-wrap">
                   {aboutContent.education}
                 </p>
               </motion.div>
             )}
             
+            <div className="luxe-divider" />
+            
+            {/* Expertise */}
             {aboutContent?.expertise && (
               <motion.div
-                variants={itemVariants}
-                className="bg-card border border-border rounded-xl p-8 hover:border-primary transition-colors"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="space-y-8"
               >
-                <h2 className="text-2xl font-bold mb-4 text-primary">Expertise</h2>
-                <div className="flex flex-wrap gap-3">
+                <h2 className="text-sm uppercase tracking-widest text-muted-foreground">Expertise</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-border">
                   {aboutContent.expertise.split(',').map((skill: string, index: number) => (
-                    <span
+                    <motion.div
                       key={index}
-                      className="px-4 py-2 bg-muted rounded-full text-sm border border-border hover:border-primary transition-colors"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.9 + index * 0.05 }}
+                      className="bg-background p-6 hover:bg-card transition-colors duration-300"
                     >
-                      {skill.trim()}
-                    </span>
+                      <span className="text-lg text-foreground">
+                        {skill.trim()}
+                      </span>
+                    </motion.div>
                   ))}
                 </div>
               </motion.div>

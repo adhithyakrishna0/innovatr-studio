@@ -2,54 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Cyber Innovator Portfolio Design System */
+/* Obsidian Minimal Luxe Design System */
 
 @layer base {
   :root {
-    /* Navy Blue Base */
-    --background: 220 30% 8%;
-    --foreground: 210 100% 98%;
+    /* Pitch Black Base */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 96%;
     
-    /* Cards & Surfaces */
-    --card: 220 25% 12%;
-    --card-foreground: 210 100% 98%;
+    /* Charcoal Secondary */
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 96%;
     
-    /* Electric Blue Accents */
-    --primary: 210 100% 56%;
-    --primary-foreground: 220 30% 8%;
-    --primary-glow: 210 100% 70%;
+    /* Soft Silver Accent */
+    --primary: 0 0% 66%;
+    --primary-foreground: 0 0% 0%;
     
-    /* Silver Highlights */
-    --secondary: 210 20% 75%;
-    --secondary-foreground: 220 30% 8%;
+    /* Secondary Surface */
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 96%;
     
-    /* Charcoal Gray */
-    --muted: 220 15% 20%;
-    --muted-foreground: 210 20% 65%;
+    /* Muted Elements */
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 66%;
     
-    --accent: 210 100% 56%;
-    --accent-foreground: 220 30% 8%;
+    --accent: 0 0% 66%;
+    --accent-foreground: 0 0% 0%;
     
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 96%;
     
-    --border: 220 20% 18%;
-    --input: 220 20% 18%;
-    --ring: 210 100% 56%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 66%;
     
-    --radius: 0.75rem;
-    
-    /* Custom Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 100% 56%), hsl(210 100% 70%));
-    --gradient-dark: linear-gradient(180deg, hsl(220 30% 8%), hsl(220 25% 12%));
-    --gradient-card: linear-gradient(145deg, hsl(220 25% 12%), hsl(220 20% 15%));
+    --radius: 0rem;
     
     /* Shadows */
-    --shadow-glow: 0 0 40px hsl(210 100% 56% / 0.3);
-    --shadow-card: 0 10px 30px hsl(220 30% 5% / 0.5);
+    --shadow-minimal: 0 1px 3px rgba(0, 0, 0, 0.5);
     
     /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -60,34 +53,43 @@
   
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     font-feature-settings: "cv11", "ss01";
     font-variation-settings: "opsz" 32;
+    letter-spacing: -0.01em;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    @apply font-bold tracking-tighter;
+    letter-spacing: -0.03em;
   }
 }
 
 @layer utilities {
-  .glow-text {
-    text-shadow: 0 0 20px hsl(var(--primary-glow) / 0.5);
+  .luxe-divider {
+    border-top: 1px solid hsl(var(--border));
   }
   
-  .glow-border {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  .fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
   }
   
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px);
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
     }
-    50% {
-      transform: translateY(-20px);
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
+  }
+  
+  .section-spacing {
+    @apply py-32;
+  }
+  
+  .container-luxe {
+    @apply max-w-7xl mx-auto px-8;
   }
 }
