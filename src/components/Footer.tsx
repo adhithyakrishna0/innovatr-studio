@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Github, Linkedin, Mail, Instagram, Twitter } from "lucide-react";
@@ -26,33 +27,44 @@ const Footer = () => {
   });
   
   return (
-    <footer className="bg-card border-t border-border py-8 mt-20">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p className="text-muted-foreground">
-            © {new Date().getFullYear()} All rights reserved.
-          </p>
+    <motion.footer 
+      className="border-t border-border bg-background"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.5, duration: 0.8 }}
+    >
+      <div className="container-luxe py-12">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} All rights reserved
+          </div>
           
-          <div className="flex space-x-6">
-            {contactInfo?.map((item) => {
-              const Icon = iconMap[item.icon] || Mail;
-              return (
-                <a
-                  key={item.id}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                  aria-label={item.label}
-                >
-                  <Icon size={20} />
-                </a>
-              );
-            })}
+          {contactInfo && contactInfo.length > 0 && (
+            <div className="flex items-center gap-6">
+              {contactInfo.map((item) => {
+                const Icon = iconMap[item.icon] || Mail;
+                return (
+                  <a
+                    key={item.id}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors duration-300"
+                    aria-label={item.label}
+                  >
+                    <Icon size={18} strokeWidth={1.5} />
+                  </a>
+                );
+              })}
+            </div>
+          )}
+          
+          <div className="text-xs text-muted-foreground uppercase tracking-wider">
+            Designed with precision
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };
 

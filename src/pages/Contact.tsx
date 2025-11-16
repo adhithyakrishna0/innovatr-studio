@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Github, Linkedin, Mail, Instagram, Twitter, Phone, MessageCircle } from "lucide-react";
+import { Github, Linkedin, Mail, Instagram, Twitter, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -54,7 +54,6 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     const result = contactSchema.safeParse(formData);
     if (!result.success) {
       const newErrors: Record<string, string> = {};
@@ -89,177 +88,131 @@ const Contact = () => {
     }
   };
   
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0.8, y: 30 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      y: 0,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-        damping: 12,
-      }
-    },
-  };
-  
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navigation />
       
-      <main className="flex-1 pt-32 pb-20">
-        <div className="container mx-auto px-4 max-w-6xl">
+      <main className="flex-1 section-spacing pt-32">
+        <div className="container-luxe max-w-5xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-16 text-center"
+            transition={{ duration: 1 }}
+            className="space-y-24"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 glow-text">Let's Connect</h1>
-            <div className="h-1 w-20 bg-primary rounded mx-auto mb-6" />
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
-            </p>
-          </motion.div>
-          
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Contact Links */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="space-y-6"
-            >
-              <motion.h2 
-                variants={itemVariants}
-                className="text-3xl font-bold mb-8"
+            {/* Header */}
+            <div>
+              <motion.h1 
+                className="text-7xl md:text-9xl font-bold text-foreground leading-none mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
               >
-                Get in Touch
-              </motion.h2>
-              
-              <div className="grid gap-4">
-                {contactInfo?.map((item) => {
+                Contact
+              </motion.h1>
+              <div className="luxe-divider" />
+            </div>
+            
+            {/* Contact Links */}
+            {contactInfo && contactInfo.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border"
+              >
+                {contactInfo.map((item, index) => {
                   const Icon = iconMap[item.icon] || Mail;
-                  const isEmail = item.platform.toLowerCase() === 'email';
-                  const isPhone = item.platform.toLowerCase() === 'phone' || item.platform.toLowerCase() === 'whatsapp';
-                  
                   return (
                     <motion.a
                       key={item.id}
                       href={item.url}
-                      target={isEmail || isPhone ? undefined : "_blank"}
-                      rel={isEmail || isPhone ? undefined : "noopener noreferrer"}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.03, x: 10 }}
-                      className="bg-card border border-border rounded-xl p-6 hover:border-primary transition-all hover:shadow-glow group flex items-center gap-4"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5 + index * 0.1 }}
+                      className="bg-background p-8 hover:bg-card transition-colors duration-300 group"
                     >
-                      <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                        <Icon className="w-6 h-6 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-bold mb-1">{item.label}</h3>
-                        <p className="text-muted-foreground text-sm">
-                          {isEmail ? item.url.replace('mailto:', '') : 
-                           isPhone && item.phone ? item.phone :
-                           `@${item.platform}`}
-                        </p>
+                      <div className="flex items-center gap-4">
+                        <Icon size={24} strokeWidth={1.5} className="text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
+                        <div>
+                          <div className="text-sm uppercase tracking-wider text-muted-foreground mb-1">
+                            {item.platform}
+                          </div>
+                          <div className="text-lg text-foreground">
+                            {item.label}
+                          </div>
+                        </div>
                       </div>
                     </motion.a>
                   );
                 })}
-              </div>
-            </motion.div>
-
+              </motion.div>
+            )}
+            
+            <div className="luxe-divider" />
+            
             {/* Contact Form */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-card border border-border rounded-2xl p-8 shadow-glow"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="space-y-8"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <MessageCircle className="w-8 h-8 text-primary" />
-                <h2 className="text-2xl font-bold">Send a Message</h2>
-              </div>
+              <h2 className="text-sm uppercase tracking-widest text-muted-foreground">Send a Message</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Your Name *
-                  </label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="John Doe"
-                    className={errors.name ? "border-destructive" : ""}
-                  />
-                  {errors.name && (
-                    <p className="text-destructive text-sm mt-1">{errors.name}</p>
-                  )}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Input
+                      placeholder="Name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="bg-transparent border-border rounded-none h-14 text-foreground placeholder:text-muted-foreground focus:border-foreground"
+                    />
+                    {errors.name && (
+                      <p className="text-sm text-destructive mt-2">{errors.name}</p>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <Input
+                      type="email"
+                      placeholder="Email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="bg-transparent border-border rounded-none h-14 text-foreground placeholder:text-muted-foreground focus:border-foreground"
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-destructive mt-2">{errors.email}</p>
+                    )}
+                  </div>
                 </div>
-
+                
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Your Email *
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="john@example.com"
-                    className={errors.email ? "border-destructive" : ""}
-                  />
-                  {errors.email && (
-                    <p className="text-destructive text-sm mt-1">{errors.email}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Your Message *
-                  </label>
                   <Textarea
-                    id="message"
-                    rows={6}
+                    placeholder="Message"
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell me about your project..."
-                    className={errors.message ? "border-destructive" : ""}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    rows={6}
+                    className="bg-transparent border-border rounded-none text-foreground placeholder:text-muted-foreground focus:border-foreground resize-none"
                   />
                   {errors.message && (
-                    <p className="text-destructive text-sm mt-1">{errors.message}</p>
+                    <p className="text-sm text-destructive mt-2">{errors.message}</p>
                   )}
                 </div>
-
+                
                 <Button 
                   type="submit" 
-                  size="lg" 
-                  className="w-full group"
-                  disabled={!whatsappContact?.phone}
+                  size="lg"
+                  className="bg-foreground text-background hover:bg-foreground/90 rounded-none h-14 px-12 font-medium"
                 >
-                  <MessageCircle className="mr-2 group-hover:rotate-12 transition-transform" size={20} />
-                  Send via WhatsApp
+                  Send Message
                 </Button>
-                
-                {!whatsappContact?.phone && (
-                  <p className="text-sm text-muted-foreground text-center">
-                    WhatsApp contact not configured
-                  </p>
-                )}
               </form>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </main>
       
