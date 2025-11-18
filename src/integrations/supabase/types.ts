@@ -148,6 +148,7 @@ export type Database = {
       }
       projects: {
         Row: {
+          category: string | null
           created_at: string
           description: string
           detailed_description: string | null
@@ -163,6 +164,7 @@ export type Database = {
           visible: boolean
         }
         Insert: {
+          category?: string | null
           created_at?: string
           description: string
           detailed_description?: string | null
@@ -178,6 +180,7 @@ export type Database = {
           visible?: boolean
         }
         Update: {
+          category?: string | null
           created_at?: string
           description?: string
           detailed_description?: string | null

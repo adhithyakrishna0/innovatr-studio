@@ -60,7 +60,7 @@ const Home = () => {
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
           {/* Nixie Clock - Fixed Right Side */}
-          <div className="fixed right-8 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
+          <div className="fixed right-32 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
             <NixieClock />
           </div>
           
@@ -82,7 +82,7 @@ const Home = () => {
                   <img
                     src={profile.profile_image_url}
                     alt={profile.full_name || "Profile"}
-                    className="w-32 h-32 rounded-full border border-border object-cover grayscale"
+                    className="w-64 h-64 border border-border object-cover"
                   />
                 </motion.div>
               )}
@@ -187,6 +187,109 @@ const Home = () => {
             </motion.div>
           </div>
         </section>
+
+        {/* Parallax Scrolling Content Sections */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1 }}
+          className="section-spacing space-y-48"
+        >
+          <div className="container-luxe">
+            {/* Section 1 - Featured Work */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.2 }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                  <h2 className="text-5xl md:text-7xl font-bold mb-6">Featured Work</h2>
+                  <p className="text-lg text-muted-foreground leading-relaxed max-w-md">
+                    Explore innovative solutions crafted with precision and creativity.
+                  </p>
+                  <Link to="/projects">
+                    <button className="mt-8 px-8 py-4 border border-border hover:bg-card transition-colors duration-300">
+                      <span className="text-sm uppercase tracking-widest">View Projects</span>
+                    </button>
+                  </Link>
+                </div>
+                <motion.div
+                  className="h-96 bg-card border border-border"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.4 }}
+                />
+              </div>
+            </motion.div>
+
+            {/* Section 2 - Philosophy */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.2 }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <motion.div
+                  className="h-96 bg-card border border-border order-2 lg:order-1"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.4 }}
+                />
+                <div className="order-1 lg:order-2">
+                  <h2 className="text-5xl md:text-7xl font-bold mb-6">Philosophy</h2>
+                  <p className="text-lg text-muted-foreground leading-relaxed max-w-md">
+                    Merging technical excellence with creative innovation to build experiences that matter.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Section 3 - Approach */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.2 }}
+            >
+              <div className="text-center max-w-4xl mx-auto">
+                <h2 className="text-6xl md:text-8xl font-bold mb-8">Approach</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                  {["Research", "Design", "Execute"].map((item, i) => (
+                    <motion.div
+                      key={item}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.2, duration: 0.8 }}
+                      className="border border-border p-8 hover:bg-card transition-colors duration-300"
+                    >
+                      <div className="text-7xl font-bold text-muted-foreground mb-4">
+                        {String(i + 1).padStart(2, '0')}
+                      </div>
+                      <h3 className="text-2xl font-bold">{item}</h3>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Nixie Clock Mobile */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="flex justify-center xl:hidden pt-32"
+            >
+              <NixieClock />
+            </motion.div>
+          </div>
+        </motion.section>
       </main>
       
       <Footer />

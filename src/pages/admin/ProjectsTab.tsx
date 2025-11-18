@@ -59,6 +59,7 @@ const ProjectsTab = () => {
       thumbnail_url: "",
       project_images: [],
       tags: [],
+      category: "Uncategorized",
       visible: true,
       github_url: "",
       live_url: "",
@@ -233,6 +234,15 @@ const ProjectsTab = () => {
                     value={project.title}
                     onChange={(e) => handleChange(index, "title", e.target.value)}
                     placeholder="Project Title"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Category</Label>
+                  <Input
+                    value={project.category || "Uncategorized"}
+                    onChange={(e) => handleChange(index, "category", e.target.value)}
+                    placeholder="e.g., Web Development, Mobile App, AI/ML"
                   />
                 </div>
                 
