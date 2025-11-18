@@ -153,6 +153,7 @@ export type Database = {
           description: string
           detailed_description: string | null
           display_order: number
+          featured: boolean | null
           github_url: string | null
           id: string
           live_url: string | null
@@ -169,6 +170,7 @@ export type Database = {
           description: string
           detailed_description?: string | null
           display_order?: number
+          featured?: boolean | null
           github_url?: string | null
           id?: string
           live_url?: string | null
@@ -185,6 +187,7 @@ export type Database = {
           description?: string
           detailed_description?: string | null
           display_order?: number
+          featured?: boolean | null
           github_url?: string | null
           id?: string
           live_url?: string | null

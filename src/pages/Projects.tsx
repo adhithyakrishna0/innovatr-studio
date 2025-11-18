@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -9,9 +9,6 @@ import { useState } from "react";
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, -150]);
-  const y2 = useTransform(scrollY, [0, 1000], [0, 150]);
 
   const { data: projects, isLoading } = useQuery({
     queryKey: ["projects"],
@@ -39,7 +36,7 @@ const Projects = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Navigation />
       
-      <main className="flex-1 section-spacing pt-32 overflow-hidden">
+      <main className="flex-1 section-spacing pt-32">
         <div className="container-luxe max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -47,17 +44,11 @@ const Projects = () => {
             transition={{ duration: 1 }}
             className="space-y-24"
           >
-            {/* Header with Parallax */}
+            {/* Header */}
             <div className="relative">
-              <motion.h1 
-                style={{ y: y1 }}
-                className="text-7xl md:text-9xl font-bold text-foreground leading-none mb-12"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-              >
+              <h1 className="text-7xl md:text-9xl font-bold text-foreground leading-none mb-12">
                 Projects
-              </motion.h1>
+              </h1>
               <div className="luxe-divider" />
             </div>
 
@@ -95,7 +86,7 @@ const Projects = () => {
             ) : (
               <div className="space-y-px bg-border">
                 {filteredProjects.map((project, index) => (
-                  <ProjectCard key={project.id} project={project} index={index} parallaxY={index % 2 === 0 ? y1 : y2} />
+                  <ProjectCard key={project.id} project={project} index={index} />
                 ))}
               </div>
             )}
@@ -108,7 +99,7 @@ const Projects = () => {
   );
 };
 
-const ProjectCard = ({ project, index, parallaxY }: { project: any; index: number; parallaxY: any }) => {
+const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -123,10 +114,7 @@ const ProjectCard = ({ project, index, parallaxY }: { project: any; index: numbe
       <Link to={`/project/${project.id}`} className="block">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-12">
           {/* Left - Number & Info */}
-          <motion.div
-            style={{ y: parallaxY }}
-            className="lg:col-span-5 space-y-6"
-          >
+          <div className="lg:col-span-5 space-y-6">
             <div className="text-sm uppercase tracking-widest text-muted-foreground">
               {String(index + 1).padStart(2, '0')}
             </div>
@@ -188,7 +176,7 @@ const ProjectCard = ({ project, index, parallaxY }: { project: any; index: numbe
                 </a>
               )}
             </div>
-          </motion.div>
+          </div>
           
           {/* Right - Image */}
           <div className="lg:col-span-7">
