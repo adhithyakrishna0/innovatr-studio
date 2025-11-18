@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -6,18 +6,58 @@ import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import NixieClock from "@/components/NixieClock";
+import AnimatedText from "@/components/AnimatedText";
 import { ArrowRight } from "lucide-react";
 
 const Home = () => {
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 1000], [0, -100]);
+  const y2 = useTransform(scrollY, [0, 1000], [0, 100]);
+
   const { data: profile } = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .single();
+        .maybeSingle();
       
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: homeContent } = useQuery({
+    queryKey: ["home-content"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("home_content")
+        .select("*")
+        .eq("section", "parallax_sections")
+        .maybeSingle();
+      
+      if (error) throw error;
+      return data?.content || {
+        featured_work_title: "Featured Work",
+        featured_work_description: "Explore innovative solutions crafted with precision and creativity.",
+        philosophy_title: "Philosophy",
+        philosophy_description: "Merging technical excellence with creative innovation to build experiences that matter.",
+      };
+    },
+  });
+
+  const { data: featuredProjects } = useQuery({
+    queryKey: ["featured-projects"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("visible", true)
+        .eq("featured", true)
+        .order("display_order")
+        .limit(3);
+      
+      if (error) throw error;
       return data;
     },
   });
@@ -43,9 +83,9 @@ const Home = () => {
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
       
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data;
     },
   });
@@ -60,7 +100,7 @@ const Home = () => {
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
           {/* Nixie Clock - Fixed Right Side */}
-          <div className="fixed right-32 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
+          <div className="fixed right-20 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
             <NixieClock />
           </div>
           
@@ -82,7 +122,7 @@ const Home = () => {
                   <img
                     src={profile.profile_image_url}
                     alt={profile.full_name || "Profile"}
-                    className="w-64 h-64 border border-border object-cover"
+                    className="w-40 h-40 rounded-full border-2 border-border object-cover"
                   />
                 </motion.div>
               )}
@@ -196,97 +236,90 @@ const Home = () => {
           transition={{ duration: 1 }}
           className="section-spacing space-y-48"
         >
-          <div className="container-luxe">
-            {/* Section 1 - Featured Work */}
+          <div className="container-luxe space-y-48">
+            {/* Featured Work Section */}
             <motion.div
-              className="relative"
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1.2 }}
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                  <h2 className="text-5xl md:text-7xl font-bold mb-6">Featured Work</h2>
-                  <p className="text-lg text-muted-foreground leading-relaxed max-w-md">
-                    Explore innovative solutions crafted with precision and creativity.
-                  </p>
-                  <Link to="/projects">
-                    <button className="mt-8 px-8 py-4 border border-border hover:bg-card transition-colors duration-300">
-                      <span className="text-sm uppercase tracking-widest">View Projects</span>
-                    </button>
-                  </Link>
-                </div>
-                <motion.div
-                  className="h-96 bg-card border border-border"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.4 }}
-                />
-              </div>
-            </motion.div>
-
-            {/* Section 2 - Philosophy */}
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1.2 }}
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <motion.div
-                  className="h-96 bg-card border border-border order-2 lg:order-1"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.4 }}
-                />
-                <div className="order-1 lg:order-2">
-                  <h2 className="text-5xl md:text-7xl font-bold mb-6">Philosophy</h2>
-                  <p className="text-lg text-muted-foreground leading-relaxed max-w-md">
-                    Merging technical excellence with creative innovation to build experiences that matter.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Section 3 - Approach */}
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1.2 }}
-            >
-              <div className="text-center max-w-4xl mx-auto">
-                <h2 className="text-6xl md:text-8xl font-bold mb-8">Approach</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-                  {["Research", "Design", "Execute"].map((item, i) => (
-                    <motion.div
-                      key={item}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.2, duration: 0.8 }}
-                      className="border border-border p-8 hover:bg-card transition-colors duration-300"
-                    >
-                      <div className="text-7xl font-bold text-muted-foreground mb-4">
-                        {String(i + 1).padStart(2, '0')}
-                      </div>
-                      <h3 className="text-2xl font-bold">{item}</h3>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Nixie Clock Mobile */}
-            <motion.div
+              style={{ y: y1 }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex justify-center xl:hidden pt-32"
+              className="space-y-12"
             >
-              <NixieClock />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="space-y-6">
+                  <h2 className="text-5xl md:text-6xl font-bold text-foreground">
+                    {(homeContent as any)?.featured_work_title || "Featured Work"}
+                  </h2>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    {(homeContent as any)?.featured_work_description || "Explore innovative solutions crafted with precision and creativity."}
+                  </p>
+                  <Link to="/projects">
+                    <Button 
+                      variant="outline" 
+                      className="border-foreground text-foreground hover:bg-foreground hover:text-background"
+                    >
+                      VIEW PROJECTS
+                    </Button>
+                  </Link>
+                </div>
+                
+                {featuredProjects && featuredProjects.length > 0 && (
+                  <Link to={`/project/${featuredProjects[0].id}`} className="group">
+                    <div className="aspect-video overflow-hidden border border-border">
+                      <img 
+                        src={featuredProjects[0].thumbnail_url || ""} 
+                        alt={featuredProjects[0].title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    </div>
+                    <h3 className="text-xl font-bold mt-4 group-hover:text-primary transition-colors">
+                      {featuredProjects[0].title}
+                    </h3>
+                  </Link>
+                )}
+              </div>
+              
+              {/* Additional Featured Projects */}
+              {featuredProjects && featuredProjects.length > 1 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {featuredProjects.slice(1).map((project: any) => (
+                    <Link key={project.id} to={`/project/${project.id}`} className="group">
+                      <div className="aspect-video overflow-hidden border border-border">
+                        <img 
+                          src={project.thumbnail_url || ""} 
+                          alt={project.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </div>
+                      <h3 className="text-lg font-bold mt-4 group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-2">{project.description}</p>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+
+            {/* Philosophy Section */}
+            <motion.div
+              style={{ y: y2 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+            >
+              <div className="aspect-square border border-border overflow-hidden">
+                <NixieClock />
+              </div>
+              <div className="space-y-6">
+                <h2 className="text-5xl md:text-6xl font-bold text-foreground">
+                  {(homeContent as any)?.philosophy_title || "Philosophy"}
+                </h2>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  {(homeContent as any)?.philosophy_description || "Merging technical excellence with creative innovation to build experiences that matter."}
+                </p>
+              </div>
             </motion.div>
           </div>
         </motion.section>

@@ -17,7 +17,9 @@ interface Project {
   thumbnail_url: string;
   project_images: string[];
   tags: string[];
+  category: string;
   visible: boolean;
+  featured: boolean;
   github_url: string;
   live_url: string;
   display_order: number;
@@ -61,6 +63,7 @@ const ProjectsTab = () => {
       tags: [],
       category: "Uncategorized",
       visible: true,
+      featured: false,
       github_url: "",
       live_url: "",
       display_order: projects.length,
@@ -130,7 +133,9 @@ const ProjectsTab = () => {
             thumbnail_url: project.thumbnail_url,
             project_images: project.project_images,
             tags: project.tags,
+            category: project.category,
             visible: project.visible,
+            featured: project.featured,
             github_url: project.github_url,
             live_url: project.live_url,
             display_order: project.display_order,
@@ -148,7 +153,9 @@ const ProjectsTab = () => {
             thumbnail_url: project.thumbnail_url,
             project_images: project.project_images,
             tags: project.tags,
+            category: project.category,
             visible: project.visible,
+            featured: project.featured,
             github_url: project.github_url,
             live_url: project.live_url,
             display_order: project.display_order,
@@ -341,6 +348,24 @@ const ProjectsTab = () => {
                     onCheckedChange={(checked) => handleChange(index, "visible", checked)}
                   />
                   <Label>Visible on website</Label>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={project.featured}
+                    onCheckedChange={(checked) => handleChange(index, "featured", checked)}
+                  />
+                  <Label>Featured on homepage</Label>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Display Order</Label>
+                  <Input
+                    type="number"
+                    value={project.display_order}
+                    onChange={(e) => handleChange(index, "display_order", parseInt(e.target.value) || 0)}
+                    placeholder="0"
+                  />
                 </div>
               </div>
             )}
