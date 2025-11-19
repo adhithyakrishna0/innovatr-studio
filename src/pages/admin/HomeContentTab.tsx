@@ -10,16 +10,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 interface HomeContent {
   featured_work_title: string;
   featured_work_description: string;
+  featured_work_image_url?: string;
   philosophy_title: string;
   philosophy_description: string;
+  philosophy_image_url?: string;
 }
 
 const HomeContentTab = () => {
   const [content, setContent] = useState<HomeContent>({
     featured_work_title: "Featured Work",
     featured_work_description: "Explore innovative solutions crafted with precision and creativity.",
+    featured_work_image_url: "",
     philosophy_title: "Philosophy",
     philosophy_description: "Merging technical excellence with creative innovation to build experiences that matter.",
+    philosophy_image_url: "",
   });
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -123,6 +127,16 @@ const HomeContentTab = () => {
               rows={2}
             />
           </div>
+          
+          <div className="space-y-2">
+            <Label>Image URL (optional)</Label>
+            <Input
+              value={content.featured_work_image_url || ""}
+              onChange={(e) => handleChange("featured_work_image_url", e.target.value)}
+              placeholder="https://example.com/image.jpg"
+            />
+            <p className="text-xs text-muted-foreground">Leave empty to show featured project instead</p>
+          </div>
         </div>
         
         <div className="space-y-4 border border-border rounded-lg p-4">
@@ -145,6 +159,16 @@ const HomeContentTab = () => {
               placeholder="Description text"
               rows={3}
             />
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Image URL</Label>
+            <Input
+              value={content.philosophy_image_url || ""}
+              onChange={(e) => handleChange("philosophy_image_url", e.target.value)}
+              placeholder="https://example.com/image.jpg"
+            />
+            <p className="text-xs text-muted-foreground">Upload your custom image for this section</p>
           </div>
         </div>
         

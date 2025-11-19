@@ -99,12 +99,12 @@ const Home = () => {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-          {/* Nixie Clock - Fixed Right Side */}
-          <div className="fixed right-20 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
+          {/* Nixie Clock - Fixed Left Side */}
+          <div className="fixed left-8 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
             <NixieClock />
           </div>
           
-          <div className="container-luxe xl:pr-[420px]">
+          <div className="container-luxe xl:pl-[420px]">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -149,15 +149,6 @@ const Home = () => {
                   </motion.div>
                 </div>
                 
-                {/* Mobile Clock */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.9, duration: 0.8 }}
-                  className="flex justify-center xl:hidden py-12"
-                >
-                  <NixieClock />
-                </motion.div>
                 
                 {/* Stats Grid */}
                 {heroStats && heroStats.length > 0 && (
@@ -263,7 +254,15 @@ const Home = () => {
                   </Link>
                 </div>
                 
-                {featuredProjects && featuredProjects.length > 0 && (
+                {(homeContent as any)?.featured_work_image_url ? (
+                  <div className="aspect-video overflow-hidden border border-border">
+                    <img 
+                      src={(homeContent as any).featured_work_image_url} 
+                      alt="Featured Work"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : featuredProjects && featuredProjects.length > 0 && (
                   <Link to={`/project/${featuredProjects[0].id}`} className="group">
                     <div className="aspect-video overflow-hidden border border-border">
                       <img 
@@ -309,9 +308,15 @@ const Home = () => {
               viewport={{ once: true }}
               className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
             >
-              <div className="aspect-square border border-border overflow-hidden">
-                <NixieClock />
-              </div>
+              {(homeContent as any)?.philosophy_image_url && (
+                <div className="aspect-square border border-border overflow-hidden">
+                  <img 
+                    src={(homeContent as any).philosophy_image_url} 
+                    alt="Philosophy"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
               <div className="space-y-6">
                 <h2 className="text-5xl md:text-6xl font-bold text-foreground">
                   {(homeContent as any)?.philosophy_title || "Philosophy"}
