@@ -98,124 +98,133 @@ const Home = () => {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-          <div className="container-luxe relative">
-            {/* Nixie Clock - Right Side, Scrolls with page */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden xl:block pointer-events-none">
-              <NixieClock />
-            </div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
-              className="space-y-16 max-w-4xl"
-            >
-              {/* Profile Image */}
-              {profile?.profile_image_url && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3, duration: 0.8 }}
-                  className="flex justify-center xl:justify-start"
-                >
-                  <img
-                    src={profile.profile_image_url}
-                    alt={profile.full_name || "Profile"}
-                    className="w-40 h-40 rounded-full border-2 border-border object-cover"
-                  />
-                </motion.div>
-              )}
-              
-              {/* Main Content */}
-              <div className="space-y-12 max-w-4xl">
-                <div className="space-y-8">
-                  <motion.h1 
-                    className="text-6xl md:text-8xl font-bold text-foreground leading-none"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                  >
-                    {profile?.full_name || "Your Name"}
-                  </motion.h1>
-                  
-                  <motion.div 
-                    className="text-2xl md:text-3xl text-muted-foreground font-light"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7, duration: 0.8 }}
-                  >
-                    {titles[0]}
-                  </motion.div>
-                </div>
-                
-                
-                {/* Stats Grid */}
-                {heroStats && heroStats.length > 0 && (
+        <section className="relative min-h-screen flex items-center pt-20 overflow-visible">
+          <div className="container mx-auto px-4 lg:px-8 relative">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-center">
+              {/* Left Side - Content */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
+                className="space-y-16 max-w-4xl"
+              >
+                {/* Profile Image */}
+                {profile?.profile_image_url && (
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.1, duration: 0.8 }}
-                    className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border mt-16"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
+                    className="flex justify-center xl:justify-start"
                   >
-                    {heroStats.map((stat, index) => (
-                      <motion.div
-                        key={stat.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.3 + index * 0.1, duration: 0.6 }}
-                        className="bg-background p-8 hover:bg-card transition-colors duration-300"
-                      >
-                        <div className="text-4xl font-bold text-foreground mb-2 tracking-tighter">
-                          {stat.value}
-                        </div>
-                        <div className="text-sm text-muted-foreground uppercase tracking-wider">
-                          {stat.label}
-                        </div>
-                      </motion.div>
-                    ))}
+                    <img
+                      src={profile.profile_image_url}
+                      alt={profile.full_name || "Profile"}
+                      className="w-40 h-40 rounded-full border-2 border-border object-cover"
+                    />
                   </motion.div>
                 )}
                 
-                {/* CTA Buttons */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.5, duration: 0.8 }}
-                  className="flex flex-col sm:flex-row gap-4 pt-8"
-                >
-                  <Link to="/projects">
-                    <Button 
-                      size="lg" 
-                      className="bg-foreground text-background hover:bg-foreground/90 rounded-none h-14 px-8 font-medium transition-all duration-300"
+                {/* Main Content */}
+                <div className="space-y-12">
+                  <div className="space-y-8">
+                    <motion.h1 
+                      className="text-6xl md:text-8xl font-bold text-foreground leading-none"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5, duration: 0.8 }}
                     >
-                      View Work
-                      <ArrowRight className="ml-2" size={20} />
-                    </Button>
-                  </Link>
-                  <Link to="/contact">
-                    <Button 
-                      size="lg" 
-                      variant="outline" 
-                      className="border-border text-foreground hover:bg-foreground hover:text-background rounded-none h-14 px-8 font-medium transition-all duration-300"
+                      {profile?.full_name || "Your Name"}
+                    </motion.h1>
+                    
+                    <motion.div 
+                      className="text-2xl md:text-3xl text-muted-foreground font-light"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7, duration: 0.8 }}
                     >
-                      Contact
-                    </Button>
-                  </Link>
-                  {resume && (
-                    <a href={resume.file_url} download target="_blank" rel="noopener noreferrer">
+                      {titles[0]}
+                    </motion.div>
+                  </div>
+                
+                  
+                  {/* Stats Grid */}
+                  {heroStats && heroStats.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.1, duration: 0.8 }}
+                      className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border mt-16"
+                    >
+                      {heroStats.map((stat, index) => (
+                        <motion.div
+                          key={stat.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.3 + index * 0.1, duration: 0.6 }}
+                          className="bg-background p-8 hover:bg-card transition-colors duration-300"
+                        >
+                          <div className="text-4xl font-bold text-foreground mb-2 tracking-tighter">
+                            {stat.value}
+                          </div>
+                          <div className="text-sm text-muted-foreground uppercase tracking-wider">
+                            {stat.label}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                  
+                  {/* CTA Buttons */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.5, duration: 0.8 }}
+                    className="flex flex-col sm:flex-row gap-4 pt-8"
+                  >
+                    <Link to="/projects">
                       <Button 
                         size="lg" 
-                        variant="outline"
-                        className="border-border text-muted-foreground hover:text-foreground hover:border-foreground rounded-none h-14 px-8 font-medium transition-all duration-300"
+                        className="bg-foreground text-background hover:bg-foreground/90 rounded-none h-14 px-8 font-medium transition-all duration-300"
                       >
-                        Resume
+                        View Work
+                        <ArrowRight className="ml-2" size={20} />
                       </Button>
-                    </a>
-                  )}
+                    </Link>
+                    <Link to="/contact">
+                      <Button 
+                        size="lg" 
+                        variant="outline" 
+                        className="border-border text-foreground hover:bg-foreground hover:text-background rounded-none h-14 px-8 font-medium transition-all duration-300"
+                      >
+                        Contact
+                      </Button>
+                    </Link>
+                    {resume && (
+                      <a href={resume.file_url} download target="_blank" rel="noopener noreferrer">
+                        <Button 
+                          size="lg" 
+                          variant="outline"
+                          className="border-border text-muted-foreground hover:text-foreground hover:border-foreground rounded-none h-14 px-8 font-medium transition-all duration-300"
+                        >
+                          Resume
+                        </Button>
+                      </a>
+                    )}
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* Right Side - Nixie Clock */}
+              <div className="hidden xl:flex items-center justify-center">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.8, duration: 1 }}
+                >
+                  <NixieClock />
                 </motion.div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
