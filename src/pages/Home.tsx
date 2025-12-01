@@ -99,17 +99,17 @@ const Home = () => {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-          {/* Nixie Clock - Fixed Left Side */}
-          <div className="fixed left-8 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
-            <NixieClock />
-          </div>
-          
-          <div className="container-luxe xl:pl-[420px]">
+          <div className="container-luxe relative">
+            {/* Nixie Clock - Right Side, Scrolls with page */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden xl:block pointer-events-none">
+              <NixieClock />
+            </div>
+            
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
-              className="space-y-16"
+              className="space-y-16 max-w-4xl"
             >
               {/* Profile Image */}
               {profile?.profile_image_url && (
