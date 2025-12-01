@@ -128,7 +128,7 @@ const Home = () => {
                 <div className="space-y-12">
                   <div className="space-y-8">
                     <motion.h1 
-                      className="text-5xl md:text-7xl lg:text-8xl font-bold text-foreground leading-tight break-words"
+                      className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight break-words"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5, duration: 0.8 }}

@@ -45,12 +45,22 @@ const Projects = () => {
             className="space-y-24"
           >
             {/* Header */}
-            <div className="relative">
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            >
               <h1 className="text-7xl md:text-9xl font-bold text-foreground leading-none mb-12">
                 Projects
               </h1>
-              <div className="luxe-divider" />
-            </div>
+              <motion.div 
+                className="luxe-divider"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              />
+            </motion.div>
 
             {/* Category Filter */}
             <motion.div
@@ -104,25 +114,48 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
-      className="bg-background hover:bg-card transition-colors duration-300 group"
+      initial={{ opacity: 0, y: 100, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ 
+        duration: 1,
+        delay: (index % 3) * 0.15,
+        ease: [0.22, 1, 0.36, 1]
+      }}
+      className="bg-background hover:bg-card transition-colors duration-500 group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link to={`/project/${project.id}`} className="block">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-12">
           {/* Left - Number & Info */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="text-sm uppercase tracking-widest text-muted-foreground">
+          <motion.div 
+            className="lg:col-span-5 space-y-6"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <motion.div 
+              className="text-sm uppercase tracking-widest text-muted-foreground"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               {String(index + 1).padStart(2, '0')}
-            </div>
+            </motion.div>
             
             <div>
-              <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+              <motion.h3 
+                className="text-3xl md:text-4xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+              >
                 {project.title}
-              </h3>
+              </motion.h3>
               {project.category && (
                 <div className="mb-3">
                   <span className="text-xs uppercase tracking-widest text-accent border border-border px-3 py-1">
@@ -176,10 +209,16 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
                 </a>
               )}
             </div>
-          </div>
+          </motion.div>
           
           {/* Right - Image */}
-          <div className="lg:col-span-7">
+          <motion.div 
+            className="lg:col-span-7"
+            initial={{ opacity: 0, x: 50, scale: 0.95 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
             {project.thumbnail_url && (
               <div className="aspect-video overflow-hidden border border-border">
                 <motion.img
@@ -187,13 +226,13 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
                   alt={project.title}
                   className="w-full h-full object-cover"
                   animate={{
-                    scale: isHovered ? 1.1 : 1,
+                    scale: isHovered ? 1.15 : 1,
                   }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 />
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
       </Link>
     </motion.div>
