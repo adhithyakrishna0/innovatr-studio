@@ -55,7 +55,7 @@ const Home = () => {
         .eq("visible", true)
         .eq("featured", true)
         .order("display_order")
-        .limit(3);
+        .limit(6);
       
       if (error) throw error;
       return data;
@@ -128,7 +128,7 @@ const Home = () => {
                 <div className="space-y-12">
                   <div className="space-y-8">
                     <motion.h1 
-                      className="text-6xl md:text-8xl font-bold text-foreground leading-none"
+                      className="text-5xl md:text-7xl lg:text-8xl font-bold text-foreground leading-tight break-words"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5, duration: 0.8 }}
@@ -238,76 +238,67 @@ const Home = () => {
         >
           <div className="container-luxe space-y-48">
             {/* Featured Work Section */}
-            <motion.div
-              style={{ y: y1 }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="space-y-12"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-6">
-                  <h2 className="text-5xl md:text-6xl font-bold text-foreground">
-                    {(homeContent as any)?.featured_work_title || "Featured Work"}
-                  </h2>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {(homeContent as any)?.featured_work_description || "Explore innovative solutions crafted with precision and creativity."}
-                  </p>
-                  <Link to="/projects">
-                    <Button 
-                      variant="outline" 
-                      className="border-foreground text-foreground hover:bg-foreground hover:text-background"
-                    >
-                      VIEW PROJECTS
-                    </Button>
-                  </Link>
-                </div>
-                
-                {(homeContent as any)?.featured_work_image_url ? (
-                  <div className="aspect-video overflow-hidden border border-border">
-                    <img 
-                      src={(homeContent as any).featured_work_image_url} 
-                      alt="Featured Work"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : featuredProjects && featuredProjects.length > 0 && (
-                  <Link to={`/project/${featuredProjects[0].id}`} className="group">
-                    <div className="aspect-video overflow-hidden border border-border">
-                      <img 
-                        src={featuredProjects[0].thumbnail_url || ""} 
-                        alt={featuredProjects[0].title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                    <h3 className="text-xl font-bold mt-4 group-hover:text-primary transition-colors">
-                      {featuredProjects[0].title}
-                    </h3>
-                  </Link>
-                )}
-              </div>
+            <div className="space-y-16">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8 }}
+                className="text-center space-y-6"
+              >
+                <h2 className="text-5xl md:text-6xl font-bold text-foreground">
+                  {(homeContent as any)?.featured_work_title || "Featured Work"}
+                </h2>
+                <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+                  {(homeContent as any)?.featured_work_description || "Explore innovative solutions crafted with precision and creativity."}
+                </p>
+                <Link to="/projects">
+                  <Button 
+                    variant="outline" 
+                    className="border-foreground text-foreground hover:bg-foreground hover:text-background mt-4"
+                  >
+                    VIEW PROJECTS
+                  </Button>
+                </Link>
+              </motion.div>
               
-              {/* Additional Featured Projects */}
-              {featuredProjects && featuredProjects.length > 1 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {featuredProjects.slice(1).map((project: any) => (
-                    <Link key={project.id} to={`/project/${project.id}`} className="group">
-                      <div className="aspect-video overflow-hidden border border-border">
-                        <img 
-                          src={project.thumbnail_url || ""} 
-                          alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                      </div>
-                      <h3 className="text-lg font-bold mt-4 group-hover:text-primary transition-colors">
-                        {project.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-2">{project.description}</p>
-                    </Link>
+              {/* Featured Projects Grid - 2 per row, alternating animations */}
+              {featuredProjects && featuredProjects.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                  {featuredProjects.map((project: any, index: number) => (
+                    <motion.div
+                      key={project.id}
+                      initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ 
+                        duration: 0.8,
+                        delay: 0.1 * (index % 2),
+                        ease: [0.4, 0, 0.2, 1]
+                      }}
+                    >
+                      <Link to={`/project/${project.id}`} className="group block">
+                        <div className="aspect-video overflow-hidden border border-border bg-card">
+                          <img 
+                            src={project.thumbnail_url || ""} 
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                        </div>
+                        <div className="mt-6 space-y-3">
+                          <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                            {project.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                            {project.description}
+                          </p>
+                        </div>
+                      </Link>
+                    </motion.div>
                   ))}
                 </div>
               )}
-            </motion.div>
+            </div>
 
             {/* Philosophy Section */}
             <motion.div
